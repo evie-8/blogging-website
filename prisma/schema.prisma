@@ -1,0 +1,183 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  guest
+  user
+}
+
+enum Notify {
+  like
+  comment
+  reply
+}
+
+model User {
+  id                    String                 @id @default(uuid())
+  email                 String                 @unique
+  username              String?                @unique
+  name                  String
+  emailVerified         DateTime?
+  password              String?
+  image                 String?                @db.LongText
+  createdAt             DateTime               @default(now())
+  role                  Role                   @default(guest)
+  updatedAt             DateTime               @updatedAt
+  Account               Account[]
+  isTwoFactorEnabled    Boolean                @default(false)
+  twoFactorConfirmation TwoFactorConfirmation?
+  blogs                 Blog[]                 @relation("UserToBlog")
+  comments              Comment[]              @relation("UserToComment")
+  notifications         Notification[]         @relation("notifications")
+  bio                   String?                @default("")
+  youTube               String?                @default("")
+  instagram             String?                @default("")
+  facebook              String?                @default("")
+  twitter               String?                @default("")
+  github                String?                @default("")
+  website               String?                @default("")
+  totalBlogs            Int?                   @default(0)
+  totalReads            Int?                   @default(0)
+  userLike              Notification[]         @relation("userLike")
+
+  @@map("user")
+}
+
+model Account {
+  id                String  @id @default(uuid())
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  token_type        String? @db.MediumText
+  refresh_token     String? @db.MediumText
+  access_token      String? @db.MediumText
+  id_token          String? @db.MediumText
+  scope             String? @db.MediumText
+  session_state     String? @db.MediumText
+  expires_at        Int?
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id")
+
+  @@unique([provider, providerAccountId])
+  @@map("account")
+}
+
+model VerificationToken {
+  id      String   @id @default(uuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model ResetPasswordToken {
+  id      String   @id @default(uuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorToken {
+  id      String   @id @default(uuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorConfirmation {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId])
+}
+
+model Blog {
+  id           String         @id @default(uuid())
+  title        String
+  banner       String?
+  des          String?        @db.Text
+  content      Json
+  tags         Tag[]          @relation("BlogToTag")
+  authorId     String
+  user         User           @relation("UserToBlog", fields: [authorId], references: [id], onDelete: Cascade)
+  activity     Activity?      @relation("BlogToActivity")
+  comments     Comment[]      @relation("BlogToComment")
+  notification Notification[]
+  draft        Boolean        @default(false)
+  publishedAt  DateTime?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+model Activity {
+  id                  String   @id @default(uuid())
+  totalLikes          Int      @default(0)
+  totalComments       Int      @default(0)
+  totalReads          Int      @default(0)
+  totalParentComments Int      @default(0)
+  blogId              String
+  blog                Blog     @relation("BlogToActivity", fields: [blogId], references: [id], onDelete: Cascade)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@unique([blogId])
+}
+
+model Tag {
+  id        String   @id @default(uuid())
+  name      String
+  blogId    String
+  blog      Blog     @relation("BlogToTag", fields: [blogId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Comment {
+  id           String         @id @default(uuid())
+  blogId       String
+  blog         Blog           @relation("BlogToComment", fields: [blogId], references: [id], onDelete: Cascade)
+  comment      String         @db.MediumText
+  isReply      Boolean?       @default(false)
+  commentedBy  String
+  commentor    User           @relation("UserToComment", fields: [commentedBy], references: [id], onDelete: Cascade)
+  parentId     String?
+  parent       Comment?       @relation("CommentToParent", fields: [parentId], references: [id], onDelete: SetNull)
+  children     Comment[]      @relation("CommentToParent")
+  createdAt    DateTime       @default(now())
+  commentedAt  DateTime?
+  updatedAt    DateTime       @updatedAt
+  Notification Notification[]
+}
+
+model Notification {
+  id                String   @id @default(uuid())
+  type              Notify
+  blogId            String
+  blog              Blog     @relation(fields: [blogId], references: [id])
+  userLikedId       String
+  userLiked         User     @relation("userLike", fields: [userLikedId], references: [id])
+  notificationForId String
+  notifcationFor    User     @relation("notifications", fields: [notificationForId], references: [id])
+  commentId         String?
+  comment           Comment?  @relation(fields: [commentId], references: [id])
+  isReplyOnComment  Boolean?   @default(false)
+  seen              Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
