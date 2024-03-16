@@ -17,7 +17,7 @@ export const getTwoFactorTokenByToken = async (token: string) => {
 }
 
 
-export const getTwoFactorTokenByEmail = async (email: string) => {
+export const getTwoFactorTokenByEmail = async (email: any) => {
     try {
 
         const tokens = await prismadb.twoFactorToken.findFirst({

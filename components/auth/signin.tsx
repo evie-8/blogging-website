@@ -184,7 +184,7 @@ or
 <GoogleSignInButton><span>Continue With Google</span></GoogleSignInButton>
    
         <p className="mt-6 text-dark-grey text-xl text-center">
-            Don't have an account?
+            Do not have an account?
             <Link href="/auth/sign-up" className="text-black underline ml-1 hover:no-underline">Join Us</Link>
         </p>
     </>

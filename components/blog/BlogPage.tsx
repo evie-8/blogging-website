@@ -147,9 +147,9 @@ const BlogPage = () =>  {
               <>
                 <h1 className='text-2xl mt-14 mb-10 font-medium'>Similar Blogs</h1>
                 {
-                  //@ts-ignore
-                sameBlog.map((same, i) => {
-                    return<Animation transition={{duration: 1, delay: i *0.08}}>
+                 
+                sameBlog.map((same: any, i: number) => {
+                    return<Animation key={i} transition={{duration: 1, delay: i *0.08}}>
                           <BlogCard blog={same}/>
                     </Animation>
                 })

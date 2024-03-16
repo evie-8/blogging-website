@@ -15,8 +15,7 @@ export const hasNotifications = async (id: string) => {
             
         })
 
-      //console.log('noy', result)
-
+      
         if (result.length) {
             return true;
         } 

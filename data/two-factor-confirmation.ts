@@ -1,6 +1,6 @@
 import prismadb from "@/lib/prismadb"
 
-export const getTwoFactorConfirmById = async (userId: string) => {
+export const getTwoFactorConfirmById = async (userId: any) => {
     try {
 
         const tokens = await prismadb.twoFactorConfirmation.findUnique({

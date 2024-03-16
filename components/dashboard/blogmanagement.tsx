@@ -82,7 +82,7 @@ const  BlogManagerCard =() => {
            <>
            {
             blogs.results.map((blog: any, i: number) => {
-                return <Animation transition={{delay: i * 0.04}}>
+                return <Animation  key={i} transition={{delay: i * 0.04}}>
                        <PublishedBlogsCard blog={{...blog, index: i, setFunc: setBlogs}}/>
                 </Animation>
             })
@@ -101,7 +101,7 @@ const  BlogManagerCard =() => {
                 <>
                 {
                     drafts.results.map((blog: any, i: number) => {
-                        return <Animation transition={{delay: i * 0.04}}>
+                        return <Animation key={i} transition={{delay: i * 0.04}}>
                             <DraftBlogsCard blog={{...blog, index: i, setFunc: setDrafts }} />
                         </Animation>
                     })

@@ -17,7 +17,7 @@ export const getResetPasswordTokenByToken = async (token: string) => {
 }
 
 
-export const getResetTokenByEmail = async (email: string) => {
+export const getResetTokenByEmail = async (email: any) => {
     try {
 
         const tokens = await prismadb.resetPasswordToken.findFirst({

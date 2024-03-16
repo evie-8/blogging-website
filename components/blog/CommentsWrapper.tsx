@@ -62,7 +62,7 @@ const  CommentsWrapper = () => {
        {
           comments.results && comments.results.length ?  
             comments.results.map((comment: any, i: number) => {
-              return <Animation>
+              return <Animation key={i}>
                 <CommentCard comment={comment} index={i} leftValue={comment.childrenLevel * 4}/>
               </Animation>
             })

@@ -80,7 +80,7 @@ const SearchPage = () => {
                   blogs.results.length ?
                  
               blogs?.results.map((blog: any, i: number) => {
-                return <Animation  transition={{duration: 1, delay: i * .1}}>
+                return <Animation key={i} transition={{duration: 1, delay: i * .1}}>
                   <BlogCard blog={blog} />
                 </Animation>
               }): <Notify message='No Blogs Published'/>)}
@@ -92,7 +92,7 @@ const SearchPage = () => {
                 users.length ? (
                   
                     users.map((user: any, i: number) => {
-                        return <Animation transition={{duration: 1, delay: i * 0.08}}>
+                        return <Animation key={i} transition={{duration: 1, delay: i * 0.08}}>
                                 <UserCard user={user}/>
                         </Animation>
                     })
@@ -117,7 +117,7 @@ const SearchPage = () => {
                         users.length ? (
                             
                             users.map((user: any, i: number) => {
-                                return <Animation transition={{duration: 1, delay: i * 0.08}}>
+                                return <Animation key={i} transition={{duration: 1, delay: i * 0.08}}>
                                         <UserCard user={user}/>
                                 </Animation>
                             })

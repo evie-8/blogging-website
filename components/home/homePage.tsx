@@ -124,7 +124,7 @@ const HomePage  =  () => {
                   blogs.results.length ?
                   
               blogs?.results.map((blog: any, i: number) => {
-                return <Animation  transition={{duration: 1, delay: i * .1}}>
+                return <Animation key={i}  transition={{duration: 1, delay: i * .1}}>
                   <BlogCard blog={blog} />
                 </Animation>
               }): <Notify message='No Blogs Published'/>)}
@@ -138,7 +138,7 @@ const HomePage  =  () => {
               (
                 trends.length ?
                 trends.map((trend, i) => {
-                  return <Animation transition={{duration: 1, delay: i * .1}}>
+                  return <Animation key={i} transition={{duration: 1, delay: i * .1}}>
                       <TrendingCard blog={trend} index={i}/>
                   </Animation>
                 }): <Notify message='No trending blogs'/>)
@@ -178,7 +178,7 @@ const HomePage  =  () => {
                 (
                   trends.length ?
                     trends.map((trend, i) => {
-                      return <Animation transition={{duration: 1, delay: i * .1}}>
+                      return <Animation key={i} transition={{duration: 1, delay: i * .1}}>
                           <TrendingCard blog={trend} index={i}/>
                       </Animation>
                     }): <Notify message='No trending blogs'/>)

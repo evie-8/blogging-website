@@ -120,7 +120,7 @@ const ProfilePage = () => {
                             blogs.results.length ?
                             //@ts-ignore
                         blogs?.results.map((blog, i) => {
-                          return <Animation  transition={{duration: 1, delay: i * .1}}>
+                          return <Animation  key={i} transition={{duration: 1, delay: i * .1}}>
                             <BlogCard blog={blog} />
                           </Animation>
                         }): <Notify message='No Blogs Published'/>)}

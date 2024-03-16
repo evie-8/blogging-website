@@ -1,7 +1,7 @@
 import prismadb from "@/lib/prismadb"
 import axios from "axios";
 
-export const getUserByEmail = async (email: string) => {
+export const getUserByEmail = async (email: any) => {
    try {
     const user = await prismadb.user.findUnique({
         where: {
@@ -18,7 +18,7 @@ export const getUserByEmail = async (email: string) => {
    
 }
 
-export const getUserById = async (id: string) => {
+export const getUserById = async (id: any) => {
     try {
         const user = await prismadb.user.findUnique({
             where: {

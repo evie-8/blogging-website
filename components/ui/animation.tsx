@@ -1,7 +1,7 @@
 import { AnimatePresence, motion,  Transition, Variants } from "framer-motion";
 interface AnimationProps {
     children: React.ReactNode;
-    key?: string;
+    key?: any;
     initial?: Variants;
     animate?: Variants;
     transition?: Transition;

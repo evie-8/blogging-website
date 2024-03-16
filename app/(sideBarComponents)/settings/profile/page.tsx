@@ -1,11 +1,11 @@
 import ProfileEdit from '@/components/dashboard/editProfile'
 import React from 'react'
 
-export const  EditProfile =() =>{
+const ProfilePage =() =>{
   return (
     
     <ProfileEdit/>
   )
 }
 
-export default EditProfile
+export default ProfilePage
