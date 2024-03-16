@@ -5,14 +5,42 @@ import Notify from '../home/Notfiy'
 
 import CommentCard from './CommentCard'
 import Animation from '../ui/animation'
+import { commentsByBlogId } from '@/actions/comments'
+
+//@ts-ignore
+export const getComments  = async ({skip = 0, blogId, array = null, parentCountFunc}) => {
+
+let res;
+  await commentsByBlogId(skip, blogId).then((data: any) => {
+   
+    data?.map((comment: any) => {
+      comment.childrenLevel = 0
+    })
+
+
+    parentCountFunc((prev: any) => prev + data?.length)
+    if (array === null) {
+      res = {results: data}
+    } else {
+      res = {results: [... array, ...data]}
+    }
+
+  })
+
+  return res
+}
 
 const  CommentsWrapper = () => {
 
     //@ts-ignore
-    let  {blog: {title, comments}, commentsContainer, setCommentsContainer} = useContext(BlogWrapper)
+    let  {blog, blog: {id, title, comments, activity},setBlog, commentsContainer, setCommentsContainer, parentCommentsLoaded , setParentCommentsLoaded} = useContext(BlogWrapper)
 
+    const loadMoreComments = async () => {
+      let newArray = await getComments({skip: parentCommentsLoaded, blogId: id, parentCountFunc: setParentCommentsLoaded, array: comments.results});
+      setBlog({...blog, comments: newArray })
+    }
   return (
-    <div tabIndex={0} onBlur={() => setCommentsContainer(false)} className={`max-sm:w-full fixed duration-700 max-sm:right-0 sm:top-0 w-[30%] min-w-[350px] h-full z-50 bg-white shadow-2xl p-8 px-16 overflow-y-auto overflow-x-hidden  ${commentsContainer ? 'top-0 sm:right-[0]' : 'top-[100%] sm:right-[-100%]'}`} >
+    <div className={`max-sm:w-full fixed duration-700 max-sm:right-0 sm:top-0 w-[30%] min-w-[350px] h-full z-50 bg-white shadow-2xl p-8 px-16 overflow-y-auto overflow-x-hidden  ${commentsContainer ? 'top-0 sm:right-[0]' : 'top-[100%] sm:right-[-100%]'}`} >
        
        <div className='relative'>
         <h1 className='text-xl font-medium'>Comments</h1>
@@ -32,14 +60,21 @@ const  CommentsWrapper = () => {
        <CommentBox action='Comment'/>
 
        {
-          comments && comments.length ?  
-            comments.map((comment: any, i: any) => {
+          comments.results && comments.results.length ?  
+            comments.results.map((comment: any, i: number) => {
               return <Animation>
-                <CommentCard comment={comment}/>
+                <CommentCard comment={comment} index={i} leftValue={comment.childrenLevel * 4}/>
               </Animation>
             })
           : <Notify message='No Comments'/>
         
+       }
+
+       {
+        activity.totalParentComments > parentCommentsLoaded ? 
+        <button onClick={loadMoreComments} className='text-dark-grey p-2 px-2 hover:bg-grey/30 rounded-md flex items-center gap-2'>Load More</button>
+        :''
+
        }
 
     </div>

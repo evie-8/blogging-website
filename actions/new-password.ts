@@ -1,11 +1,13 @@
 "use server";
 
+import { auth } from "@/auth";
 import { getResetPasswordTokenByToken } from "@/data/reset-password";
 import { getUserByEmail } from "@/data/user";
 import prismadb from "@/lib/prismadb";
-import { NewPasswordSchema } from "@/schemas/schema";
+import { NewPasswordSchema, ChangePasswordSchema } from "@/schemas/schema";
 import { compare, hash } from "bcryptjs";
 import * as z  from "zod";
+
 
 
 export const newPassword = async (values: z.infer<typeof NewPasswordSchema>, token?: string | null) => {
@@ -68,6 +70,59 @@ export const newPassword = async (values: z.infer<typeof NewPasswordSchema>, tok
             id: existingToken.id
         }
     })
+
+    return {success: "Password updated!"}
+} 
+
+export const changePassword = async (values: z.infer<typeof ChangePasswordSchema>) => {
+
+const session = await auth()
+    if (!session || !session.user) {
+        return {error: 'No user session'}
+    }
+
+    const validateFields = ChangePasswordSchema.safeParse(values);
+
+    if (!validateFields.success) {
+        return {error: "invalid entries"}
+    }
+
+    const { password, currentPassword } = validateFields.data;
+
+  
+    const existingUser = await getUserByEmail(session.user.email);
+
+
+    if (!existingUser) {
+        return {error: "Email does not exist!"}
+    }
+
+    const oldPassword = existingUser.password;
+
+    if (oldPassword ) {
+        const formerPassword = await compare(password, oldPassword);
+       
+        const similar   = await compare(currentPassword, oldPassword)
+        if (!similar) {
+            return {error: 'Invalid password'}
+        }
+        if (formerPassword) {
+            return {error: "Create a new password"}
+        }
+
+    }
+ 
+    const hashPassword = await hash(password, 10);
+    await prismadb.user.update({
+        where: {
+            id: existingUser.id,
+        },
+        data: {
+            password: hashPassword
+        }
+    })
+
+  
 
     return {success: "Password updated!"}
 } 

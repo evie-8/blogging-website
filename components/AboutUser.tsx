@@ -1,8 +1,8 @@
-import { getDay, getFullDay } from '@/date'
+import { getFullDay } from '@/date'
 import Link from 'next/link'
 import React from 'react'
 interface Props {
-    bio?: any,
+    bio: string,
     socials: {
       youtube: string,
       instagram: string,
@@ -14,13 +14,10 @@ interface Props {
     joinedAt: any,
     className?: string
 
-
-
-
 }
 
 const AboutUser: React.FC<Props> = ({
-    bio = '', 
+    bio, 
     socials,
     joinedAt,
     className = ''
@@ -34,7 +31,7 @@ const AboutUser: React.FC<Props> = ({
           //@ts-ignore
           const link = socials[key]
           return link ? <Link href={link} key={key} target='_blank'>
-            <i className={`text-2xl hover:text-black fi ` + (key !== 'website' ? `fi-brands-${key}` : 'fi-rr-globe')}></i>
+            <i className={`text-2xl hover:text-black fi ` + (`${key !== 'website' ? `${key === 'twitter' ? `fi-brands-${key}-alt` : `fi-brands-${key}`} ` : 'fi-rr-globe'}`)}></i>
             </Link> : ''
         })
       }

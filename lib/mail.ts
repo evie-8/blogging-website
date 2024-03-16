@@ -5,10 +5,10 @@ import TwoFactorCodeEmail from "@/app/emails/two-factor";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-
+const domain = process.env.NEXT_AUTH_URL
 export const sendVerificationEmail = async (email: string,
     token: string) =>{
-        const confirmationLink = `http://localhost:3000/auth/new-verify?token=${token}`;
+        const confirmationLink = `${domain}/auth/new-verify?token=${token}`;
         await resend.emails.send({
             from: "onboarding@resend.dev",
             to: email,
@@ -21,7 +21,7 @@ export const sendVerificationEmail = async (email: string,
 
 export const sendPasswordResentEmail = async (email: string, name: string,
     token: string) =>{
-        const confirmationLink = `http://localhost:3000/auth/new-password?token=${token}`;
+        const confirmationLink = `${domain}/auth/new-password?token=${token}`;
         await resend.emails.send({
             from: "onboarding@resend.dev",
             to: email,
@@ -33,8 +33,7 @@ export const sendPasswordResentEmail = async (email: string, name: string,
 
 
 
-export const sendTwoFactorEmail = async (email: string,
-    token: string) =>{
+export const sendTwoFactorEmail = async (email: string, token: string) =>{
         await resend.emails.send({
             from: "onboarding@resend.dev",
             to: email,

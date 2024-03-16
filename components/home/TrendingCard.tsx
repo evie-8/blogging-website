@@ -1,11 +1,9 @@
 "use client"
-import { fetchUser } from '@/data/user';
+
 import { getDay } from '@/date';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import Loader from '../ui/Loader';
-import Skeleton from 'react-loading-skeleton';
 interface Props {
     blog: any,
     index: number
@@ -41,9 +39,7 @@ const TrendingCard: React.FC<Props> =({blog, index}) => {
             </div>
     </Link>
     )
-    : (
-        <Skeleton className='mb-8 w-full' count={1}/>
-    )
+    :''
    }
    </>
   )

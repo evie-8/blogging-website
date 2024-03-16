@@ -132,5 +132,3 @@ function otherLanguageReadTime(string: any) {
       otherLanguageTime,
     };
   }
-  
-  

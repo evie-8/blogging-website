@@ -12,37 +12,50 @@ import { getFullDay } from '@/date';
 import BlogInteraction from './BlogInteraction';
 import BlogCard from '../home/BlogCard';
 import 'react-quill/dist/quill.bubble.css';
-import 'highlight.js/styles/stackoverflow-light.css'
+import 'highlight.js/styles/stackoverflow-light.css';
 import { readTime } from '@/readtime';
-import CommentsWrapper from './CommentsWrapper';
+import CommentsWrapper, { getComments } from './CommentsWrapper';
+import ReactTimeago from 'react-timeago';
 
-export const BlogWrapper = createContext({})
+export const BlogWrapper = createContext({});
 
 const BlogPage = () =>  {
 
   const params = useParams();
-  const blogId: string  = String(params.blogId) 
-  const [blog, setBlog] = useState<any | null>(null)
-  const [sameBlog, setSameBlog] = useState<any | null>(null)
-  const [liked, setLiked] = useState(false) 
-  const [loading, setLoading] = useState(true)
-  const [commentsContainer, setCommentsContainer] = useState(false) //set to false later
-  const [parentComments, setParentComments] = useState(0)
+  const blogId: string  = String(params.blogId); 
+  const [blog, setBlog] = useState<any | null>(null);
+  const [sameBlog, setSameBlog] = useState<any | null>(null);
+  const [liked, setLiked] = useState(false) ;
+  const [loading, setLoading] = useState(true);
+  const [commentsContainer, setCommentsContainer] = useState(false);
+  const [parentCommentsLoaded, setParentCommentsLoaded] = useState<number>(0);
 
   const getBlog = async () => {
-    const blogData = await fetchBlogById(blogId)
-
-    //@ts-ignore
-    const matchingBlogs =await fetchByTag(blogData?.tags[0].name, blogId)
-    setBlog(blogData)
-    setSameBlog(matchingBlogs)
+     await fetchBlogById(blogId).then(async (blogData: any) => {
+     
+     await getComments({blogId, parentCountFunc:setParentCommentsLoaded}).then((comments) => {
+    
+      blogData.comments = comments;
    
-    setLoading(false)
+     });
+      
+     setBlog(blogData);
+      
+      await fetchByTag(blogData.tags[0].name, blogId).then((matchingBlogs) => {
+        setSameBlog(matchingBlogs);
+      });
+    
+  
+    
+    });
+
+
+    setLoading(false);
   }
 
   useEffect(() => {
-    reset()
-    getBlog()
+    reset();
+    getBlog();
   
   }, [blogId])
 
@@ -50,17 +63,19 @@ const BlogPage = () =>  {
     setBlog(null);
     setSameBlog(null);
     setLoading(true);
-    //setComments(false);
-    setParentComments(0);
+    setLiked(false);
+   
+    setParentCommentsLoaded(0);
  
   }
+ 
   return (
    
     <Animation>
       {
         loading ? <Loader/> :
        
-      <BlogWrapper.Provider value={{blog, setBlog, liked, setLiked, commentsContainer, setCommentsContainer, parentComments, setParentComments}}>
+      <BlogWrapper.Provider value={{blog, setBlog, liked, setLiked, commentsContainer, setCommentsContainer, parentCommentsLoaded, setParentCommentsLoaded}}>
           <CommentsWrapper />
           <div className='max-w-[900px] center py-10 max-lg:px-[5vw]'>
           <img src={blog.banner} alt="banner" className='aspect-video' />
@@ -83,19 +98,37 @@ const BlogPage = () =>  {
                   }
                 </Avatar>
 
-                <p className='capitalize'>
+                <div className=''>
+                  <Link href={`/user/${blog.user?.username}`} className='hover:underline capitalize'>
                   {blog.user?.name}
-                  <br />
-                  <Link href={`/user/${blog.user?.username}`} className='underline'>
-                    {blog.user?.username}
                     </Link>
-                </p>
-                <span className='text-dark-grey'>{readTime(blog.content.blocks).humanizedDuration} read</span>
+                    {
+                      blog.isUpdated && <span className='font-gelasio ml-3 pl-2'>Last Updated <ReactTimeago date={blog.updatedAt} formatter={(value, unit, suffix) =>
+                        {
+                           if (value < 15 && unit ==='second' ) return 'just now';
+                           if (unit == 'second')  return `few seconds ${suffix}`;
+                           const plural:string  = value !== 1 ? 's' :''; 
+                           return `${value} ${unit}${plural} ${suffix}`
+                           
+                         }
+                       }
+                         /> </span>
+                    }
+                    <br />
+                    <div className='flex items-start justify-start gap-3 font-gelasio flex-row'>
+                    <span className='text-dark-grey'>{readTime(blog.content.blocks).humanizedDuration} read</span>
+              
+                    <span className='text-dark-grey'>
+                      {getFullDay(blog.publishedAt)}
+                    </span>
+                    </div>
+                 
+                  <br />
+                 
+                </div>
               
               </div>
-              <p className='text-dark-grey opacity-75 max-sm:mt-6 max-sm:ml-12 max-sm:pl-5'>
-                Published on {getFullDay(blog.publishedAt)}
-              </p>
+             
             </div>
           </div>
           <BlogInteraction/>

@@ -1,4 +1,4 @@
-import EditPublish from "../_components/edit-page";
+import EditPublish from "@/components/editors/edit-page";
 
 const EditBlogPage = () => {
     

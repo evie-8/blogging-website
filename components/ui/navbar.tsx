@@ -2,19 +2,26 @@
 import { useSession } from "next-auth/react";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import NavPanel from "../nav-panel";
 import { usePathname} from "next/navigation";
 import { useRouter} from "next-nprogress-bar";
 import Image from "next/image";
 import { noNavBarRoutes } from "@/routes";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { themeContext } from "./theme";
 
 const NavBar = () => {
 
     const{data: session} = useSession();
     const pathname = usePathname();
     const router = useRouter()
+     const {theme, setTheme} = useContext(themeContext)
+
+    const changeTheme = () => {
+        setTheme((prev: string) => prev === 'light' ? 'dark': 'light')
+      
+    }
 
         const [visibility, setVisibility] = useState(false);
         const [navPanel, setNavPanel] = useState(false);
@@ -32,18 +39,18 @@ const NavBar = () => {
             }
         }
 
-
         const handleBlur = () => {
             setTimeout(() => {
                 setNavPanel(false)
             }, 2000)
         }
 
+    
         if (noNavBarRoutes.includes(pathname)) {
             return (
                 <nav className="navbar flex items-center justify-center border-0 gap-2 mt-2">
 
-                 <Image src="/images/logo.png" width={50} height={50}  style={{width: "50px", height: "50px"}} alt="logo" />
+                 <Image src={`${theme === 'light' ? "/images/logo.png": '/images/logo-light.png'}`} width={50} height={50}  style={{width: "50px", height: "50px"}} alt="logo" />
                     
                  <h1 className="text-5xl font-gelasio text-center font-semi-bold ">EazyWrite</h1>
                 </nav>
@@ -53,11 +60,14 @@ const NavBar = () => {
         if (pathname.startsWith('/edit')) {
             return null
         }
+
+
+     
     return (
         <>
            <nav className="navbar">
                 <Link href="/"  className="flex-none w-10">
-                    <img src="/images/logo.png" className="w-full"/>
+                    <img src={`${theme === 'light' ? "/images/logo.png": '/images/logo-light.png'}`} className="w-full"/>
                 </Link>
                 <div className={"absolute py-4 px-[5vw] bg-white w-full left-0 top-full mt-0 border-b " + 
                  " border-grey md:block md:relative md:inset-0 md:border-0 md:p-0 md:w-auto md:show " + (visibility ? "show": "hide")}>
@@ -82,6 +92,10 @@ const NavBar = () => {
                      
                     </Link>
                   
+                        <button onClick={changeTheme} className="w-12 h-12 rounded-full bg-grey relative hover:bg-black/10 flex items-center justify-center">
+                            <i className={`fi ${theme === 'light' ? ' fi-rr-moon-stars' : 'fi-rr-sun'} text-xl`}></i>
+                        </button>
+                  
                     { !session ? 
                   <>
                       <Link href="/auth/sign-in" className="btn-dark py-2">Sign In</Link>
@@ -90,7 +104,10 @@ const NavBar = () => {
                    :  <>
                     <Link href="/dashboard/notifications">
                         <button className="w-12 h-12 rounded-full bg-grey relative hover:bg-black/10 flex items-center justify-center hover:scale-105">
-                            <i className="fi fi-rr-bell  text-xl"></i>
+                            <i className="fi fi-rr-bell text-xl"></i>
+                           {
+                            session.user.newNotification ?  <span className="absolute bg-red w-3 h-3 rounded-full z-5 top-2 right-3"></span> : ''
+                           }
                         </button>
                     </Link>
                     <div className="relative"  tabIndex={0} onBlur={handleBlur} onClick={() => setNavPanel(current => !current)}>

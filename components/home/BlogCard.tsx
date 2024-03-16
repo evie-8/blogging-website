@@ -1,13 +1,11 @@
 "use client"
 
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { getDay } from "@/date";
+
 import Link from "next/link";
 
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
 import { readTime } from "@/readtime";
-import TimeAgo from "react-timeago"
+import ReactTimeAgo from "react-timeago"
 interface Props {
     blog: any,
 
@@ -37,7 +35,14 @@ const BlogCard: React.FC<Props> = ({blog}) => {
                 
                 </Avatar> 
                <p className="line-clamp-1">{blog.user?.name} {`@${blog.user?.username}`}</p>
-                <p className="min-w-fit"><TimeAgo date={blog.publishedAt}/></p>
+                <p className="min-w-fit"><ReactTimeAgo date={blog.publishedAt} formatter={(value, unit, suffix) =>
+                             {
+                                if (value < 15 && unit ==='second' ) return 'just now';
+                                if (unit == 'second')  return  `few seconds ${suffix}`;
+                                const plural:string  = value !== 1 ? 's' :''; 
+                               return `${value} ${unit}${plural} ${suffix}`
+                              }
+                            }/></p>
     
             </div>
             <h1 className="blog-title">{blog.title}</h1>
@@ -59,38 +64,7 @@ const BlogCard: React.FC<Props> = ({blog}) => {
             </div>
       </Link>
          )
-            : (
-                <div className="flex gap-8 items-center border-b border-grey pb-5 mb-5">
-                     <div className="w-full">
-             <div className="flex gap-2 items-center mb-7">
-            
-                        <div className="w-6 h-6 ">
-                            <Skeleton className="w-full h-full rounded-[100%]"/>
-                        </div> 
-                         <p className="w-full">{<Skeleton />}</p>
-                      
-            
-                    </div>
-                    <h1 className="blog-title">{<Skeleton/>}</h1>
-                    <p className="my-3 text-xl font-gelasio leading-7 max-sm:hidden md:max-[1100px]:hidden line-clamp-2">
-                    {<Skeleton count={2}/>}
-                    </p>
-                            <div className="flex gap-4 mt-7">
-                          
-                            <span className="btn-light py-1 px-4">{<Skeleton/>}</span>
-                            <span className="ml-3 flex items-center gap-2 text-dark-grey">
-                              
-                                {<Skeleton/>}
-                            </span>
-                            </div>
-                            </div>
-                            <div className="h-28 aspect-square bg-grey">
-                                {<Skeleton className="w-full h-full aspect-square object-cover"/>}
-                            </div>
-                </div>
-            )
-
-            
+            :  ''           
         }
     </div>
        

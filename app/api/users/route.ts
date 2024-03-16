@@ -1,12 +1,17 @@
+import { auth } from "@/auth";
 import prismadb from "@/lib/prismadb";
 import { NextResponse } from "next/server";
 
 export async function GET (req: Request) {
     try {
 
+        
+        
         const users = await prismadb.user.findMany({
-            include: {
-                blogs: true
+            select: {
+                name: true,
+                username: true,
+                email: true,
             }
           
 

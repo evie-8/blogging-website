@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { EditContext } from "../app/edit/_components/edit-page";
+import { EditContext } from "../components/editors/edit-page";
 
 export const createBlog = async(data: any) => {
     try {

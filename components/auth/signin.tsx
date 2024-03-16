@@ -39,6 +39,7 @@ const SignIn: React.FC<SignProps> = ({
 
     const searchParams = useSearchParams();
     const urlError =  searchParams.get('error') === "OAuthAccountNotLinked" ? "Try another Login option!" : "";
+    const callbackUrl =searchParams.get("callbackUrl");
     const [loading, setLoading] = useTransition();
     const [errorMessage, setErrorMessage] = useState<string | undefined>("");
     const [successMessage, setSucessMessage] = useState<string | undefined>("");
@@ -61,7 +62,7 @@ const SignIn: React.FC<SignProps> = ({
       
                
         setLoading( () => {
-            Login(values).then(data => {
+            Login(values, callbackUrl).then(data => {
               if (data?.error) {
 
                 form.reset();
@@ -174,7 +175,7 @@ const SignIn: React.FC<SignProps> = ({
 {
 !show && (
     <>
-         <div className='my-4 flex w-[100%] max-w-[400px] w-full items-center justify-evenly
+         <div className='my-4 flex  max-w-[400px] w-full items-center justify-evenly
 before:mr-4 before:block before:h-px before:flex-grow before:bg-black opacity-[60%] before:opacity-[60%] 
 after:ml-4 after:block after:h-px after:flex-grow after:bg-black after:opacity-[60%]'>
 or

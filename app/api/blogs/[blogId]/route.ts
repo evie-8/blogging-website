@@ -37,7 +37,7 @@ export async function PATCH(req: Request,
         const session = await auth();
         const body =  await req.json();
 
-        const {title, banner, content,  des, tags, draft, publishedAt} = body
+        const {title, banner, content,  des, tags, draft, publishedAt, isUpdated} = body
 
         if (!session || !session.user) {
             return new NextResponse("Unauthenticated", {status: 401})
@@ -90,7 +90,8 @@ export async function PATCH(req: Request,
                         content,
                         des,
                         draft,
-                        publishedAt
+                        publishedAt,
+                        isUpdated
                     }
                 });
 
@@ -142,7 +143,7 @@ export async function PATCH(req: Request,
 
                 }
 
-                console.log("blogs",updateBlog)
+            
                 return NextResponse.json(updateBlog);
             }
 

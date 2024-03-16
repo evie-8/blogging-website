@@ -19,6 +19,7 @@ enum Notify {
   like
   comment
   reply
+  all
 }
 
 model User {
@@ -120,6 +121,7 @@ model Blog {
   comments     Comment[]      @relation("BlogToComment")
   notification Notification[]
   draft        Boolean        @default(false)
+  isUpdated    Boolean?
   publishedAt  DateTime?
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
@@ -149,35 +151,41 @@ model Tag {
 }
 
 model Comment {
-  id           String         @id @default(uuid())
-  blogId       String
-  blog         Blog           @relation("BlogToComment", fields: [blogId], references: [id], onDelete: Cascade)
-  comment      String         @db.MediumText
-  isReply      Boolean?       @default(false)
-  commentedBy  String
-  commentor    User           @relation("UserToComment", fields: [commentedBy], references: [id], onDelete: Cascade)
-  parentId     String?
-  parent       Comment?       @relation("CommentToParent", fields: [parentId], references: [id], onDelete: SetNull)
-  children     Comment[]      @relation("CommentToParent")
-  createdAt    DateTime       @default(now())
-  commentedAt  DateTime?
-  updatedAt    DateTime       @updatedAt
-  Notification Notification[]
+  id                       String         @id @default(uuid())
+  blogId                   String
+  blog                     Blog           @relation("BlogToComment", fields: [blogId], references: [id], onDelete: Cascade)
+  comment                  String         @db.MediumText
+  isReply                  Boolean        @default(false)
+  commentedBy              String
+  commentor                User           @relation("UserToComment", fields: [commentedBy], references: [id], onDelete: Cascade)
+  parentId                 String?
+  parent                   Comment?       @relation("CommentToParent", fields: [parentId], references: [id], onDelete: Cascade)
+  children                 Comment[]      @relation("CommentToParent")
+  createdAt                DateTime       @default(now())
+  commentedAt              DateTime?
+  updatedAt                DateTime       @updatedAt
+  Notification             Notification[] @relation("comment")
+  NotificationReplyComment Notification[] @relation("replyToCommentReply")
+  NotificationReplying     Notification[] @relation("replyto")
 }
 
 model Notification {
-  id                String   @id @default(uuid())
-  type              Notify
-  blogId            String
-  blog              Blog     @relation(fields: [blogId], references: [id])
-  userLikedId       String
-  userLiked         User     @relation("userLike", fields: [userLikedId], references: [id])
-  notificationForId String
-  notifcationFor    User     @relation("notifications", fields: [notificationForId], references: [id])
-  commentId         String?
-  comment           Comment?  @relation(fields: [commentId], references: [id])
-  isReplyOnComment  Boolean?   @default(false)
-  seen              Boolean  @default(false)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id                    String   @id @default(uuid())
+  type                  Notify
+  blogId                String
+  blog                  Blog     @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  userLikedId           String
+  userLiked             User     @relation("userLike", fields: [userLikedId], references: [id], onDelete: Cascade)
+  notificationForId     String
+  notifcationFor        User     @relation("notifications", fields: [notificationForId], references: [id], onDelete: Cascade)
+  commentId             String?
+  comment               Comment? @relation("comment", fields: [commentId], references: [id], onDelete: Cascade)
+  replyId               String?
+  replyComment          Comment? @relation("replyto", fields: [replyId], references: [id])
+  replyOnCommentReplyId String?
+  replyOnCommentReply   Comment? @relation("replyToCommentReply", fields: [replyOnCommentReplyId], references: [id], onDelete: Cascade)
+
+  seen      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

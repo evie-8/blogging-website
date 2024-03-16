@@ -1,41 +1,41 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { BlogWrapper } from './BlogPage'
-import Link from 'next/link'
-import { useSession } from 'next-auth/react'
-import axios from 'axios'
-import { findNotification } from '@/actions/notify'
-import toast from 'react-hot-toast'
+import React, { useContext, useEffect, useState } from 'react';
+import { BlogWrapper } from './BlogPage';
+import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+import axios from 'axios';
+import { findNotification } from '@/actions/notify';
+import toast from 'react-hot-toast';
 
 const BlogInteraction = () => {
 
-    const {data: session} = useSession()
+    const {data: session} = useSession();
     //@ts-ignore
-    let {blog, blog: {id, title, activity, user}, setBlog, liked, setLiked,  setCommentsContainer} = useContext(BlogWrapper)
+    let {blog, blog: {id, title, activity, user}, setBlog, liked, setLiked,  setCommentsContainer} = useContext(BlogWrapper);
 
 
  const handleLike = async() => {
     if (session && session.user) {
 
         //@ts-ignore
-        setLiked(p => !p)
+        setLiked(p => !p);
 
-        !liked ? activity.totalLikes++ : activity.totalLikes--
-        setBlog({...blog, activity})
-        console.log("liked", activity.totalLikes, liked)
-        await axios.post("/api/notifications", {
+        !liked ? activity.totalLikes++ : activity.totalLikes--;
+        setBlog({...blog, activity});
+        
+        await axios.post("/api/likes", {
           type: 'like',
           blogId: id,
           notificationForId: user.id,
           userLikedId: session.user.id,
           activityId: activity.id,
           liked
-        })
+        });
     } else {
       return toast("Login to like a blog", {
         icon:  '🔑'
-    })
+    });
     }
- }
+ };
 
 
  const [isPlaying, setIsPlaying] = useState(false);
@@ -61,13 +61,13 @@ const BlogInteraction = () => {
   useEffect(() => {
     if (session && session.user) {
       const notifyExists = async() => {
-        //@ts-ignore
-        const result = await findNotification(id, session.user.id);
-        //console.log('tt', result)
-        setLiked(Boolean(result))
+        
+        const result = await findNotification(id, session?.user?.id);
+       
+        setLiked(Boolean(result));
       }
       
-      notifyExists()    
+      notifyExists();
     }
 
   }, [])
@@ -113,12 +113,11 @@ const BlogInteraction = () => {
          <button onClick={handleLike} className={`w-10 h-10 rounded-full flex items-center justify-center ${liked ? 'text-red bg-red/20': 'bg-grey/80'}` }>
                 <i className={`fi ${liked ? 'fi-sr-heart' : 'fi-rr-heart'}`}></i>
             </button>
-            <p className='text-xl, text-dark-grey' >{activity.totalLikes}</p>
-         `
+            <p className='text-xl text-dark-grey' >{activity.totalLikes}</p>
             
                 <button onClick={
-                  //@ts-ignore
-                  () => setCommentsContainer(prev => !prev)} className='w-10 h-10 rounded-full flex items-center justify-center bg-grey/80'>
+                  
+                  () => setCommentsContainer((prev: boolean) => !prev)} className='w-10 h-10 rounded-full flex items-center justify-center bg-grey/80'>
                     <i className='fi fi-rr-comment-dots'></i>
                 </button>
                 <p className='text-xl, text-dark-grey'>{activity.totalComments}</p>
@@ -126,7 +125,7 @@ const BlogInteraction = () => {
         </div>
         <div className='flex gap-6 items-center'>
 
-        <button className='' onClick={isPlaying ? pause : play}>
+        <button className='hidden' onClick={isPlaying ? pause : play}>
                     {isPlaying ? (
                     
                         <i className= "fi fi-rr-pause-circle text-xl"></i>
@@ -144,7 +143,7 @@ const BlogInteraction = () => {
                 <Link href={`/edit/${id}`} className='underline hover:text-purple'>Edit</Link>
                 : ''
             }
-            <Link href={`https://twitter.com/intent/tweet?text=Read ${title}&url=${location.href}`} target='_blank'><i className='fi fi-brands-twitter text-xl hover:text-twitter'></i></Link>
+            <Link href={`https://twitter.com/intent/tweet?text=Read ${title}&url=${location.href}`} target='_blank'><i className='fi fi-brands-twitter-alt text-xl hover:text-black/30'></i></Link>
         </div>
     </div>
     <hr className='border-grey my-2'/>

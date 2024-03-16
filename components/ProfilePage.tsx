@@ -82,11 +82,23 @@ const ProfilePage = () => {
                         <p className="">{profile.totalBlogs.toLocaleString()} Blogs - {profile.totalReads.toLocaleString()} Reads</p>
                       
                           {
-                          session && session.user.username === userName ? 
+                          session && session.user.username === userName &&
+                          (
+                            <>
+                        
+                        {!session.user.isOAuth && (
+                            <div className="flex items-center gap-3 justify-start">
+                                <p className="text-base capitalize">2FA</p>
+                                <span className={`font-semibold py-2 px-3 rounded-full border-none ${profile.isTwoFactorEnabled ? 'btn-dark' : 'btn-light'}`}>{profile.isTwoFactorEnabled ? 'ON' : 'OFF'}</span>
+                            </div>)
+                          }
+
                           <div className="flex gap-4 mt-2"> 
-                          <Link href='#' className='btn-light rounded-md'>Edit Profile</Link>
+                          <Link href='/settings/profile' className='btn-light rounded-md'>Edit Profile</Link>
                           </div>
-                          : ''
+                          </>
+                          )
+                        
                           }
                            
                         
@@ -97,7 +109,7 @@ const ProfilePage = () => {
                         github: profile.github,  facebook: profile.facebook,
                          instagram: profile.instagram, website: profile.website, 
                        
-                        }}/>
+                        }} bio={profile.bio}/>
                     </div>
                     <div className="max-md:mt-12 w-full md:overflow-y-auto">
                     <PageNavigation routes={[ "Blogs Published", "About"]} hiddenRoutes={['About']}>
@@ -122,7 +134,7 @@ const ProfilePage = () => {
                         github: profile.github,  facebook: profile.facebook,
                          instagram: profile.instagram, website: profile.website, 
                        
-                        }}/>
+                        }} bio={profile.bio}/>
             
                      </PageNavigation>
 

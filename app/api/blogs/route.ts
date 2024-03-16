@@ -52,7 +52,7 @@ export async function POST (
     };
 
     if (tags && tags.length > 0) {
-        // Include tags creation only when the tags array is non-empty
+        
         //@ts-ignore
         blogData.tags = {
             createMany: {
@@ -92,7 +92,7 @@ export async function POST (
 
                 }
             })
-            console.log("blogs",blog)
+     
     };
     
     return NextResponse.json(blog)
@@ -135,8 +135,7 @@ export async function GET (req: Request) {
           draft: false,
       };
   }
-        //console.log("tag", tag)
-        //console.log('search', search)
+        
         const blogs = await prismadb.blog.findMany({
             where:whereCondition,
             include: {
@@ -150,7 +149,7 @@ export async function GET (req: Request) {
             
         });
 
-        console.log('...', blogs)
+      
         return NextResponse.json(blogs)
         
     } catch (error) {

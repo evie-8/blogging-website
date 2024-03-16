@@ -27,7 +27,6 @@ export const fetchAllUsers = async(query?: string) => {
             take: 5
         })
 
-        //console.log('users', users)
         return users
     } catch(error) {
         console.log(error)
@@ -77,7 +76,7 @@ export const BlogTrends = async() => {
 }
 
 export const fetchBlogs = async (tag?: string, page: number = 1, search?: string) => {
-  const limit = 1
+  const limit = 5
   const skipper = (page -1) * limit
   try {
 
@@ -134,17 +133,6 @@ export const fetchBlogById = async ( blogId?: string) => {
         include: {
           tags: true,
           activity: true,
-          comments: {
-          
-            orderBy: {
-              commentedAt: 'desc'
-            },
-
-            include: {
-              commentor: true,
-              children: true,
-            }
-          },
           user: true
 
         },
@@ -184,7 +172,7 @@ export const fetchBlogById = async ( blogId?: string) => {
 
 
 export const fetchByTag = async(tag: string, blogId: string) => {
-  console.log('tag-tag', tag)
+  //console.log('tag-tag', tag)
   try {
     const blogs = await prismadb.blog.findMany({
       where: {
@@ -227,7 +215,7 @@ export const fetchByTag = async(tag: string, blogId: string) => {
 
 export const fetchTags = async (page: number = 1) => {
   try {
-    const limit = 2
+    const limit = 6
     const skipper = (page -1) * limit
     const tags = await prismadb.tag.findMany({
      distinct: ['name'],
@@ -251,11 +239,116 @@ export const fetchTags = async (page: number = 1) => {
       
      })
 
-     console.log(tags, newTag.length)
+     //console.log(tags, newTag.length)
     return {tags, tagCount: newTag.length}
     
   } catch (error) 
   {
     console.log(error)  
+  }
+}
+
+
+export const findAllBlogsByQuery = async(
+  {authorId, draft, query, page, deleted}: 
+  {authorId: string | undefined, draft: boolean, query: string, page: number, deleted?: number}) => {
+try {
+    const limit = 1;
+    let skipper = (page -1 ) * limit;
+
+    if (deleted) {
+      skipper -= deleted
+    }
+
+    let whereClause:any = {
+      draft: draft,
+      authorId: authorId
+    };
+
+    if (query) {
+      whereClause = {
+        title: {
+          contains: query
+        },
+        draft: draft,
+        authorId: authorId,
+      }
+    }
+
+    const blogs = await prismadb.blog.findMany({
+      where:whereClause,
+      take: limit,
+      skip: skipper,
+      orderBy: draft ? {
+        createdAt: 'desc'
+      }: { publishedAt: 'desc'},
+      include: {
+        activity: {
+          select: {
+            totalComments: true,
+            totalLikes: true,
+            totalParentComments: true,
+            totalReads: true
+          }
+        },
+        user: true
+      }
+    });
+    const blogsCount = await prismadb.blog.count({
+      where: whereClause
+    })
+
+    //console.log('blogs', blogs, blogsCount)
+    return {blogs:blogs, count: blogsCount}
+
+} catch (error) {
+ return null 
+}
+}
+
+
+export const deleteBlog = async({id, authorId}: {id:string, authorId: string}) => {
+  try {
+
+    const blog = await prismadb.blog.findUnique({
+      where:{
+        id,
+        authorId
+      },
+      include: {
+        activity: true
+      }
+
+    })
+    if (blog) {
+      let del = blog.draft === false ? 1: 0 
+      let reads = blog.activity?.totalReads
+    await prismadb.blog.delete({
+      where: {
+        id,
+        authorId
+      }
+    })
+
+  
+    await prismadb.user.update({
+      where: {
+        id: authorId
+      },
+      data: {
+        totalBlogs: {
+          decrement: del
+        },
+        totalReads: {
+          decrement: reads
+        }
+      }
+    })
+  }
+   
+  return 'deleted successfully '
+  } catch (error) {
+    return null;
+    
   }
 }

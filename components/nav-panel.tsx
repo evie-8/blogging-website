@@ -24,7 +24,7 @@ const NavPanel = () => {
                 <Link href={`/user/${user?.username}`} className="flex gap-2 link pl-8 py-4">
                 <i className="fi fi-rr-user"></i><p>Profile</p>
                 </Link>
-                <Link href={`/dashboard/articles`} className="flex gap-2 link pl-8 py-4">
+                <Link href={`/dashboard/blogs`} className="flex gap-2 link pl-8 py-4">
                 <i className="fi fi-rr-grid"></i><p>Dashboard</p>
                 </Link>
                 <Link href={`/settings/profile`} className="flex gap-2 link pl-8 py-4">

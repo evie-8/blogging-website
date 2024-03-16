@@ -56,7 +56,7 @@ const HomePage  =  () => {
     const newFormat = await PaginationData({array: categories, data: tags, page, count: tagCount})
      
     setCategories(newFormat)
-   console.log('datss', newFormat)
+  
   }
   
 
@@ -66,12 +66,10 @@ const HomePage  =  () => {
    
     const newFormat = await PaginationData({array: blogs, data: res, page, count:totals})
     setBlogs(newFormat)
-    console.log("filter", newFormat)
+   
    }
 
-   //count
-
-   
+  
   //@ts-ignore
   const fetchData = async (page = 1) => {
 
@@ -79,7 +77,7 @@ const HomePage  =  () => {
 
     const totals = await total() 
     const newFormat = await PaginationData({array: blogs, data: res, page, count: totals})
-    //@ts-ignore
+   
     setBlogs(newFormat);
         
   };
@@ -124,8 +122,8 @@ const HomePage  =  () => {
                 (              
 
                   blogs.results.length ?
-                  //@ts-ignore
-              blogs?.results.map((blog, i) => {
+                  
+              blogs?.results.map((blog: any, i: number) => {
                 return <Animation  transition={{duration: 1, delay: i * .1}}>
                   <BlogCard blog={blog} />
                 </Animation>

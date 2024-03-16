@@ -5,6 +5,8 @@ import prismadb from "./lib/prismadb"
 import { getUserById } from "./data/user"
 import { Role } from "@prisma/client"
 import { getTwoFactorConfirmById } from "./data/two-factor-confirmation"
+import { getAccountByUserId } from "./data/account"
+import { hasNotifications } from "./data/notification"
 
 export const {
   handlers: { GET, POST },
@@ -68,14 +70,53 @@ export const {
              if (token.username && session.user) {
                 session.user.username = token.username as string ;
              } 
+
+             if (token.isOAuth && session.user) {
+                session.user.isOAuth = token.isOAuth as boolean
+             }
+
+             if (token.bio && session.user) {
+                session.user.bio = token.bio as string
+             }
+
+             if (token.socials && session.user) {
+                //@ts-ignore
+                session.user.socials = token.socials
+             }
+
+             if (token.isTwoFactorEnabled  && session.user) {
+                session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean
+             }
+
+             if (token.newNotificationAvailable && session.user) {
+                session.user.newNotification = token.newNotificationAvailable as boolean
+             }
+           
             return session
         },
         async jwt({token}) {
             if (!token.sub) return token;
             const existsUser = await getUserById(token.sub);
+            const existingAccount = await getAccountByUserId(token.sub)
+
+            token.isOAuth = !!existingAccount
             token.role = existsUser?.role;
             token.username = existsUser?.username;
-            token.picture = existsUser?.image
+            token.picture = existsUser?.image;
+            token.bio = existsUser?.bio;
+            token.isTwoFactorEnabled  = existsUser?.isTwoFactorEnabled;
+            token.newNotificationAvailable = await hasNotifications(token.sub);
+           
+            token.socials = {
+
+                youtube: existsUser?.youTube,
+                instagram: existsUser?.instagram,
+                facebook: existsUser?.facebook,
+                twitter: existsUser?.twitter,
+                github: existsUser?.github,
+                website: existsUser?.website,
+                
+            }
             
             return token
         },

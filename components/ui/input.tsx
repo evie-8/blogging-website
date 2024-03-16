@@ -23,7 +23,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         ref={ref}
         {...props}
       />
-      <i className={"fi " + icon + " input-icon"}></i>
+      <i className={"fi " + icon + " input-icon mt-1"}></i>
        {
         type === "password" ? <i className={"fi fi-rr-eye" + (!visible ? "-crossed" : "") + " input-icon left-[auto] right-4 cursor-pointer"} onClick={() => setVisible(current => !current)}></i> : ""
        }

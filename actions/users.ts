@@ -27,7 +27,7 @@ export const fetchUserByUserName = async(userName: string) => {
 }
 
 export const fetchBlogsByUserName = async (username?: string, page: number = 1, ) => {
-    const limit = 1
+    const limit = 5
     const skipper = (page -1) * limit
     let data = {}
     try {

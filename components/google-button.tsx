@@ -1,11 +1,12 @@
 "use client"
 import { signIn } from 'next-auth/react';
 
-import { FC, MouseEventHandler, ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 
 import Image from 'next/image';
 import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
+import { useSearchParams } from 'next/navigation';
 
 interface GoogleSignInButtonProps {
   children: ReactNode;
@@ -13,9 +14,11 @@ interface GoogleSignInButtonProps {
   
 }
 const GoogleSignInButton: FC<GoogleSignInButtonProps> =  ({ children}) => {
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl");
   const onclick = () => {
      signIn("google", {
-      callbackUrl: DEFAULT_LOGIN_REDIRECT,
+      callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
      })}
   
   return (

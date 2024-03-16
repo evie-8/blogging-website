@@ -15,7 +15,7 @@
     }
 
     body {
-        @apply font-inter font-normal text-black;
+        @apply font-inter font-normal text-black bg-white;
     }
 
     i {
@@ -28,6 +28,20 @@
 
     ::selection {
         @apply bg-purple/30;
+    }
+    
+    ::-webkit-scrollbar {
+        @apply h-2 w-2
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      
+       @apply rounded-full m-2 bg-dark-grey/35
+    }
+
+  
+    ::-webkit-search-cancel-button {
+        @apply hidden
     }
 
     img{
@@ -99,6 +113,10 @@
         @apply font-inter text-3xl leading-loose max-md:text-2xl max-md:leading-normal !important;
     }
 
+    #textEditor strong, .blog-page-content strong, .ql-editor strong {
+        @apply font-extrabold !important;
+    }
+
     #textEditor *, .blog-page-content *, .ql-editor *{
         @apply font-gelasio text-xl leading-10 md:text-2xl;
     }
@@ -119,6 +137,9 @@
         @apply text-4xl sm:text-3xl lg:text-5xl font-bold text-grey leading-none;
     }
 
+    .ql-bubble .ql-editor pre.ql-syntax {
+        @apply bg-white2 rounded-[10px] p-5 text-xl text-black !important
+    }
 
 }
 
@@ -129,21 +150,7 @@
 .shadow-custom {
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
   }
-.cdx-settings-button[data-tune='withBorder'],
-.cdx-settings-button[data-tune='withBackground'],
-.cdx-settings-button[data-tune='stretched'] {
-  display: none;
-}
 
-
-.ql-bubble .ql-editor pre.ql-syntax {
- background-color: #F2F2F2!important; 
- border-radius: 20px !important;
- padding: 20px !important;
- font-size: 16px !important;
-
-color: #242424 !important;
-}
 .ql-bubble .ql-editor pre.ql-syntax * {
     font-size: inherit !important;
     line-height: normal !important;

@@ -42,8 +42,7 @@ const SearchPage = () => {
         const totals = await total(searchQuery) 
         const newFormat = await PaginationData({ createArray, array: blogs, data: res, page, count: totals })
         setBlogs(newFormat)
-        console.log('search', newFormat)
-
+      
     }
 
     const searchUsers = async () => {
@@ -55,7 +54,7 @@ const SearchPage = () => {
 
         reset()
         searchBlogs(1, true)
-        //console.log('search1', blogs)
+       
         searchUsers() 
        
 
@@ -79,8 +78,8 @@ const SearchPage = () => {
                 (              
                  
                   blogs.results.length ?
-                  //@ts-ignore
-              blogs?.results.map((blog, i) => {
+                 
+              blogs?.results.map((blog: any, i: number) => {
                 return <Animation  transition={{duration: 1, delay: i * .1}}>
                   <BlogCard blog={blog} />
                 </Animation>
@@ -91,8 +90,8 @@ const SearchPage = () => {
               {
             users === null ? <Loader/> : (
                 users.length ? (
-                    //@ts-ignore
-                    users.map((user, i) => {
+                  
+                    users.map((user: any, i: number) => {
                         return <Animation transition={{duration: 1, delay: i * 0.08}}>
                                 <UserCard user={user}/>
                         </Animation>
@@ -116,8 +115,8 @@ const SearchPage = () => {
                 {
                     users === null ? <Loader/> : (
                         users.length ? (
-                            //@ts-ignore
-                            users.map((user, i) => {
+                            
+                            users.map((user: any, i: number) => {
                                 return <Animation transition={{duration: 1, delay: i * 0.08}}>
                                         <UserCard user={user}/>
                                 </Animation>

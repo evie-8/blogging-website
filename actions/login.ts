@@ -16,7 +16,7 @@ import { getTwoFactorConfirmById } from "@/data/two-factor-confirmation";
 import { compare } from "bcryptjs";
 
 
-export const Login = async (values: z.infer<typeof SignInSchema>) => {
+export const Login = async (values: z.infer<typeof SignInSchema>, callbackUrl?: string | null) => {
     const validateFields = SignInSchema.safeParse(values);
 
     if (!validateFields.success) {
@@ -110,7 +110,7 @@ if (existingUser.isTwoFactorEnabled && existingUser.email) {
         await signIn("credentials", {
             email,
             password,
-            redirectTo: DEFAULT_LOGIN_REDIRECT
+            redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT
         })
     
    } catch (error) {
