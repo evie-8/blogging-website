@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "cockroachdb"
   url      = env("DATABASE_URL")
 }
 
@@ -29,7 +29,7 @@ model User {
   name                  String
   emailVerified         DateTime?
   password              String?
-  image                 String?                @db.LongText
+  image                 String?                
   createdAt             DateTime               @default(now())
   role                  Role                   @default(guest)
   updatedAt             DateTime               @updatedAt
@@ -58,12 +58,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String  @map("provider_account_id")
-  token_type        String? @db.MediumText
-  refresh_token     String? @db.MediumText
-  access_token      String? @db.MediumText
-  id_token          String? @db.MediumText
-  scope             String? @db.MediumText
-  session_state     String? @db.MediumText
+  token_type        String? 
+  refresh_token     String? 
+  access_token      String? 
+  id_token          String? 
+  scope             String? 
+  session_state     String? 
   expires_at        Int?
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -112,7 +112,7 @@ model Blog {
   id           String         @id @default(uuid())
   title        String
   banner       String?
-  des          String?        @db.Text
+  des          String?        @db.String(200)
   content      Json
   tags         Tag[]          @relation("BlogToTag")
   authorId     String
@@ -154,7 +154,7 @@ model Comment {
   id                       String         @id @default(uuid())
   blogId                   String
   blog                     Blog           @relation("BlogToComment", fields: [blogId], references: [id], onDelete: Cascade)
-  comment                  String         @db.MediumText
+  comment                  String         
   isReply                  Boolean        @default(false)
   commentedBy              String
   commentor                User           @relation("UserToComment", fields: [commentedBy], references: [id], onDelete: Cascade)
