@@ -52,7 +52,7 @@ const  Notifications = () => {
             {
                 filters.map((filterName, i) => 
                {
-                return <button onClick={handleClick} className={`py-2 ${filter === filterName ? 'btn-dark' : 'btn-light'}`} key={i}>{filterName}</button>
+                return <button onClick={handleClick} className={`py-2 px-4 ${filter === filterName ? 'btn-dark' : 'btn-light'}`} key={i}>{filterName}</button>
                }
                     )
             }
