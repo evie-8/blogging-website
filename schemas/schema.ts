@@ -147,7 +147,7 @@ function validateURL(url: string, hostname: string) {
   }
 }
 
-async function getUser(id: string, email: string) {
+async function getUser(id: string, email: string | undefined) {
   try {
    const res =  await axios.get(`http://localhost:3000/api/users/${id}/${email}`);
 console.log('yy', res.data)

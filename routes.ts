@@ -35,6 +35,6 @@ export const noNavBarRoutes = [
 /**
  * api for authentication 
  */
-export const apiAuthPrefix = ["/api/auth","/api/blogs", "/api/users", '/api/notifications'];
+export const apiAuthPrefix = ["/api/auth","/api/blogs", "/api/users", '/api/likes', '/api/comments']
 
 export const DEFAULT_LOGIN_REDIRECT = "/";

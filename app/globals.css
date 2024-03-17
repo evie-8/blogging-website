@@ -31,14 +31,14 @@
     }
     
     ::-webkit-scrollbar {
-        @apply h-2 w-2
+        @apply h-2 w-2 
+    
     }
     
     ::-webkit-scrollbar-thumb {
       
        @apply rounded-full m-2 bg-dark-grey/35
     }
-
   
     ::-webkit-search-cancel-button {
         @apply hidden

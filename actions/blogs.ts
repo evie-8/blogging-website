@@ -253,7 +253,7 @@ export const findAllBlogsByQuery = async(
   {authorId, draft, query, page, deleted}: 
   {authorId: string | undefined, draft: boolean, query: string, page: number, deleted?: number}) => {
 try {
-    const limit = 1;
+    const limit = 5;
     let skipper = (page -1 ) * limit;
 
     if (deleted) {

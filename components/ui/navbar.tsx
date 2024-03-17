@@ -67,7 +67,7 @@ const NavBar = () => {
         <>
            <nav className="navbar">
                 <Link href="/"  className="flex-none w-10">
-                    <img src={`${theme === 'light' ? "/images/logo.png": '/images/logo-light.png'}`} className="w-full"/>
+                    <img src={`${theme === 'light' ? "/images/logo.png": '/images/logo-light.png'}`} alt='logo' className="w-full"/>
                 </Link>
                 <div className={"absolute py-4 px-[5vw] bg-white w-full left-0 top-full mt-0 border-b " + 
                  " border-grey md:block md:relative md:inset-0 md:border-0 md:p-0 md:w-auto md:show " + (visibility ? "show": "hide")}>

@@ -124,7 +124,7 @@ const NavBar:React.FC<NavBarProps> = ({
                 <Toaster toastOptions={{ style: {background: (theme) ==='light' ? '#FFFFFF': '#242424', color:(theme) ==='light'? '#6b6b6b' : '#f3f3f3' }}}/>
       
                 <Link href="/"  className="flex-none w-10">
-                    <img src={`${theme === 'light' ? "/images/logo.png": '/images/logo-light.png'}`} className="w-full"/>
+                    <img src={`${theme === 'light' ? "/images/logo.png": '/images/logo-light.png'}`} alt="logo" className="w-full"/>
                 </Link>
                 <p className="max-md:hidden text-black line-clamp-1 w-full">
                     {heading} 

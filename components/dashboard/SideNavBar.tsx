@@ -55,11 +55,11 @@ const SideNavBar = ({
             <h1 className='text-xl text-dark-grey mb-3'>Dashboard</h1>
             <hr className='border-grey -ml-6 mb-8 mr-6'/>
                 <>
-                        <Link href='/edit' className='sidebar-link' onClick={(e: any) => setPageState(e.target.innerText)}>
+                        <Link href='/edit' className='sidebar-link hover:ml-1' onClick={(e: any) => setPageState(e.target.innerText)}>
                         <i className="fi fi-rr-file-edit"></i>
                             Write
                         </Link>
-                        <Link href='/dashboard/notifications' className={`sidebar-link ${path === '/dashboard/notifications' ? 'active' : ''}`}onClick={(e: any) => setPageState(e.target.innerText)}>
+                        <Link href='/dashboard/notifications' className={`sidebar-link hover:ml-1 ${path === '/dashboard/notifications' ? 'active' : ''}`}onClick={(e: any) => setPageState(e.target.innerText)}>
                         
                         <button className='relative'>
                         <i className="fi fi-rr-bell"></i>
@@ -71,7 +71,7 @@ const SideNavBar = ({
                         </button>
                         Notifications
                         </Link>
-                        <Link href='/dashboard/blogs' className={`sidebar-link ${path === '/dashboard/blogs' ? 'active' : ''}`}onClick={(e:any) => setPageState(e.target.innerText)}>
+                        <Link href='/dashboard/blogs' className={`sidebar-link hover:ml-1 ${path === '/dashboard/blogs' ? 'active' : ''}`}onClick={(e:any) => setPageState(e.target.innerText)}>
                         <i className="fi fi-rr-document"></i>
                         Blogs
                         </Link>
@@ -80,13 +80,13 @@ const SideNavBar = ({
                          <h1 className='text-xl text-dark-grey mt-12 mb-3'>Settings</h1>
                         < hr className='border-grey -ml-6 mb-8 mr-6'/>
                             <>
-                                    <Link href='/settings/profile' className={`sidebar-link ${path === '/settings/profile' ? 'active' : ''}`} onClick={(e: any) => setPageState(e.target.innerText)}>
+                                    <Link href='/settings/profile' className={`sidebar-link hover:ml-1 ${path === '/settings/profile' ? 'active' : ''}`} onClick={(e: any) => setPageState(e.target.innerText)}>
                                          <i className="fi fi-rr-user"></i>
                                          Edit  Profile
                                 </Link>
                                {
                                 !session?.user.isOAuth ? 
-                                <Link href='/settings/change-password' className={`sidebar-link  ${path === '/settings/change-password' ? 'active' : ''}`} onClick={(e: any) => setPageState(e.target.innerText)}>
+                                <Link href='/settings/change-password' className={`sidebar-link hover:ml-1 ${path === '/settings/change-password' ? 'active' : ''}`} onClick={(e: any) => setPageState(e.target.innerText)}>
                                 <i className="fi fi-rr-lock"></i>
                                     Change Password
                            </Link>
