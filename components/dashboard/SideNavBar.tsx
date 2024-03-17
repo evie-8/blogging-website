@@ -51,7 +51,7 @@ const SideNavBar = ({
         </button>
         <hr className='absolute bottom-0 duration-500' ref={activeLine}/>
       </div>
-        <div className={`min-w-[200px] h-cover md:h-cover md:sticky top-24 p-6 md:pr-0 md:border-grey md:border-r absolute max-md:top-[64px] bg-white max-md:w-[calc(100%+80px)] max-md:px-16 max-md:l-7 duration-500  ${!showSideNavBar ? 'max-sm:opacity-0 max-sm:pointer-events-none' : 'max-sm:opacity-100 pointer-events-auto'}`}>
+        <div className={`min-w-[200px] h-[calc(100vh-80px-60px)] md:h-cover md:sticky top-24 p-6 md:pr-0 md:border-grey md:border-r absolute max-md:top-[64px] bg-white max-md:w-[calc(100%+80px)] max-md:px-16 max-md:l-7 duration-500  ${!showSideNavBar ? 'max-sm:opacity-0 max-sm:pointer-events-none' : 'max-sm:opacity-100 pointer-events-auto'}`}>
             <h1 className='text-xl text-dark-grey mb-3'>Dashboard</h1>
             <hr className='border-grey -ml-6 mb-8 mr-6'/>
                 <>
@@ -95,7 +95,7 @@ const SideNavBar = ({
                             </>
         </div>
     </div>
-    <div className='max-md:flex-1 max-md:overflow-y-auto'>
+    <div className=''>
         {children}
     </div>
   </section>
