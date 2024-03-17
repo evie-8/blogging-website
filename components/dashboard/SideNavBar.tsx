@@ -95,7 +95,7 @@ const SideNavBar = ({
                             </>
         </div>
     </div>
-    <div className='max-md:flex-1 max-md:overflow-y-auto'>
+    <div>
         {children}
     </div>
   </section>
