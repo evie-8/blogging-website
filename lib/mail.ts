@@ -10,7 +10,7 @@ export const sendVerificationEmail = async (email: string,
     token: string) =>{
         const confirmationLink = `${domain}/auth/new-verify?token=${token}`;
         await resend.emails.send({
-            from: "onboarding@resend.dev",
+            from: "mail@eazywrite.me",
             to: email,
             subject: "Confirm your account",
             react: ConfirmAccount({confirmEmailLink: confirmationLink})
@@ -23,7 +23,7 @@ export const sendPasswordResentEmail = async (email: string, name: string,
     token: string) =>{
         const confirmationLink = `${domain}/auth/new-password?token=${token}`;
         await resend.emails.send({
-            from: "onboarding@resend.dev",
+            from: "mail@eazywrite.me",
             to: email,
             subject: "Reset Your Password",
            react: ResetPasswordEmail({name, resetPasswordLink: confirmationLink})
@@ -35,7 +35,7 @@ export const sendPasswordResentEmail = async (email: string, name: string,
 
 export const sendTwoFactorEmail = async (email: string, token: string) =>{
         await resend.emails.send({
-            from: "onboarding@resend.dev",
+            from:"mail@eazywrite.me",
             to: email,
             subject: "2FA Code",
            react: TwoFactorCodeEmail({validationCode: token})
