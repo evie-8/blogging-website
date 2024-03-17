@@ -149,7 +149,7 @@ function validateURL(url: string, hostname: string) {
 
 async function getUser(id: string, email: string | undefined) {
   try {
-   const res =  await axios.get(`http://localhost:3000/api/users/${id}/${email}`);
+   const res =  await axios.get(`https://blogging-website-npkv.vercel.app/api/users/${id}/${email}`);
 console.log('yy', res.data)
   return res.data
   } catch(error) {
