@@ -109,7 +109,7 @@
     }
 
     #textEditor iframe,  .blog-page-content iframe, .ql-editor iframe {
-        @apply block mx-auto w-[80%] !important
+        @apply block mx-auto w-[80%] h-full object-cover !important
     }
     
     #textEditor h3, h3, .blog-page-content h3, .ql-editor h3 {
