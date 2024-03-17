@@ -105,11 +105,11 @@
     }
 
     #textEditor img,  .blog-page-content img, .ql-editor img {
-        @apply block mx-auto w-[80%] !important
+        @apply block mx-auto w-[100%] !important
     }
 
     #textEditor iframe,  .blog-page-content iframe, .ql-editor iframe {
-        @apply block mx-auto w-[80%] h-full object-cover !important
+        @apply block mx-auto w-full h-full aspect-video !important
     }
     
     #textEditor h3, h3, .blog-page-content h3, .ql-editor h3 {
