@@ -51,7 +51,7 @@ const BlogCard: React.FC<Props> = ({blog}) => {
             </p>
             <div className="flex gap-4 mt-7">
             {blog .tags.length > 0 &&
-            <span className="btn-light py-1 px-4">{blog.tags[0].name}</span>}
+            <span className="btn-light py-1 px-4 max-md:hidden">{blog.tags[0].name}</span>}
             <span className='text-dark-grey py-1 px-4'>{readTime(blog.content.blocks).humanizedDuration} read</span>
             <span className="ml-3 flex items-center gap-2 text-dark-grey">
                 <i className="fi fi-rr-heart text-xl mt-1"></i>
