@@ -5,11 +5,7 @@ import { usePathname } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react'
 
 
-const SideNavBar = ({
-    children,
-  }: {
-    children: React.ReactNode
-  }) => {
+const SideNavBar = ({children}: {children: React.ReactNode}) => {
 
     const [showSideNavBar, setShowSideNavBar] = useState(false)
     const path = usePathname();
@@ -39,8 +35,7 @@ const SideNavBar = ({
    }, [pageState])
     
   return (
-    <>
-  <section className='relative flex gap-10 py-0 m-0 max-md:flex-col'>
+    <section className='relative flex gap-10 py-0 m-0 max-md:flex-col'>
     <div className='sticky top-[80px] z-30'>
       <div className='md:hidden bg-white py-1 border-b border-grey flex flex-nowrap overflow-x-auto'>
         <button ref={sideBarIcon} className='p-5 capitalize' onClick={changeStatePage}>
@@ -95,13 +90,14 @@ const SideNavBar = ({
                             </>
         </div>
     </div>
-    <div className=''>
-        {children}
+    <div>
+    {children}
     </div>
-  </section>
+    </section>
  
-  </>
   )
 }
+
+
 
 export default SideNavBar

@@ -133,10 +133,10 @@ const BlogPage = () =>  {
           </div>
           <BlogInteraction/>
 
-                  <div className='quill'>
-                    <div className='ql-container ql-bubble'>
+                  <div className='quill overflow-x-hidden'>
+                    <div className='ql-container ql-bubble overflow-x-hidden'>
                           
-                  <div className='my-12 ql-editor blog-page-content' id='blogPost' dangerouslySetInnerHTML={{__html:blog.content.blocks }}>  
+                  <div className='my-12 ql-editor blog-page-content overflow-x-hidden' id='blogPost' dangerouslySetInnerHTML={{__html:blog.content.blocks }}>  
                   </div>
                     </div>
                   </div>

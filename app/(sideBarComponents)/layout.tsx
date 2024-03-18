@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
      <>
      <SideNavBar>
-     {children}
+      {children}
      </SideNavBar>
    
      </>
