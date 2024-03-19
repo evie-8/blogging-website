@@ -47,7 +47,7 @@ const  Notifications = () => {
   return (
     <div>
         
-        <h1 className='max-md:hidden my-5'>Recent Notifications</h1>
+        <h1 className='max-md:hidden'>Recent Notifications</h1>
         <div className='my-8 flex gap-6 max-md:gap-3'>
             {
                 filters.map((filterName, i) => 

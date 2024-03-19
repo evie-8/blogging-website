@@ -166,7 +166,7 @@ useEffect(() => {
           <Form {...form}>
 
             <form onSubmit={form.handleSubmit(onSubmit)} >
-                <h1 className="max-md:hidden py-5">Edit Profile</h1>
+                <h1 className="max-md:hidden">Edit Profile</h1>
              
         
                 <div className="flex flex-col lg:flex-row items-start py-10 gap-8 lg:gap-10">

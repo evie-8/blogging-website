@@ -67,9 +67,9 @@ const ChangePassword = () => {
         
           <Form {...form}>
 
-            <div  className=" w-full py-10 md:min-w-[400px]">
+            <div  className=" w-full  md:min-w-[400px]">
             <h1 className="max-md:hidden ">Change Password</h1>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="">
                 
                 <span className="mt-4 block"></span>
 

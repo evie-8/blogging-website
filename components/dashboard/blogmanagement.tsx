@@ -63,7 +63,7 @@ const  BlogManagerCard =() => {
     [blogs, drafts, query])
   return (
     <>
-        <h1 className='max-md:hidden my-4 mx-2'>
+        <h1 className='max-md:hidden'>
             Manage Blogs
         </h1>
         <Toaster/>
