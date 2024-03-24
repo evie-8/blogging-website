@@ -89,7 +89,7 @@ const Editor = () => {
 
       
     useEffect(() => {
-        if (pathname !== '/edit'){  
+        if (pathname !== '/edit' && !draft){  
             toast("All changes made will be automatically added to your published article")
         } else {
             return
@@ -215,7 +215,7 @@ const Editor = () => {
                             toolbar: {
                             
                               container: [
-                                [{ header: "2" }, { header: "3" }, { font: [] }],
+                                [{ header: "2" }, { header: "3" }, { font: [] },],
                                 [{ size: [] }],
                                 ["bold", "italic", "underline", "strike", "blockquote"],
                                 [
